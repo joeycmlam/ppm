@@ -6,11 +6,19 @@ import java.util.List;
 public class holdings {
     private List<holding> acctHoldings;
 
+    public int numAccounts () {
+
+        for (int i=0; this.acctHoldings.size() > i; i++) {
+
+        }
+        return 0;
+    }
+
     public holdings() {
         this.acctHoldings = new ArrayList<>();
     }
 
-    public long getNumHolding() {
+    public long getNumHoldings() {
         return acctHoldings.size();
     }
 
@@ -26,26 +34,6 @@ public class holdings {
     }
 
     public void loadData(String resp) {
-        holding h = new holding();
-        h.acctid= "660001";
-        h.stockid = "0001.HK";
-        h.unit = 1000;
-        h.mv = 1500;
-        this.addHolding(h);
-
-        h = new holding();
-        h.acctid= "660001";
-        h.stockid = "0002.HK";
-        h.unit = 2000;
-        h.mv = 1800;
-        this.addHolding(h);
-
-        h = new holding();
-        h.acctid= "670001";
-        h.stockid = "0002.HK";
-        h.unit = 1500;
-        h.mv = 1300;
-        this.addHolding(h);
     }
 
     public double getTotalMV() {
