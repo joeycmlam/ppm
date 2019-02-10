@@ -135,7 +135,6 @@ public class singleAccountFeatureTest {
         holding h = this.viewHolding.getHolding(this.account_id, this.stock_code);
         BigDecimal actualValue = h.wgt.setScale(5,BigDecimal.ROUND_HALF_UP);
         BigDecimal expectedDecimalValue = expectedValue.setScale(5, BigDecimal.ROUND_HALF_UP);
-//        BigDecimal actualValue = h.wgt;
         Assert.assertEquals(expectedDecimalValue, actualValue);
 
     }

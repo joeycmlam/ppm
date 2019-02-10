@@ -9,5 +9,5 @@ public class holding {
     public double unit=0;
     public double mv=0;
     public BigDecimal wgt= BigDecimal.valueOf(0.0);
-
+    public boolean isHide=false;
 }
