@@ -1,13 +1,8 @@
 package com.am.portfolio;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import java.io.FileReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
 
 
@@ -26,12 +21,10 @@ public class holdings {
     }
 
     public void initData() {
-        dataRepo dataSource = new dataRepo();
-        String response = dataSource.getPosition();
 
-
-
-
+        dataRepo dataSource = new dataRepo("src/test/resource", "input.data.01.csv");
+        ArrayList<holding> records = dataSource.getPositions();
+        records.forEach(aHolding -> this.addHolding(aHolding));
 
     }
 

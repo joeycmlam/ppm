@@ -31,7 +31,8 @@ public class singleAccountFeatureTest {
     @When("^I call CalcEngine$")
     public void iCallCalcEngine() throws Throwable {
         viewHolding =new holdings();
-        this.mockDataHolding();
+        viewHolding.initData();;
+//        this.mockDataHolding();
         this.viewHolding.calcWeight();
 //        this.mockitoHoldings();
     }
