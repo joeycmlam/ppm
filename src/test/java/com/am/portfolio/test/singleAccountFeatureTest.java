@@ -30,8 +30,9 @@ public class singleAccountFeatureTest {
 
     @When("^I call CalcEngine$")
     public void iCallCalcEngine() throws Throwable {
-        viewHolding =new holdings();
-        viewHolding.initData();;
+        this.viewHolding =new holdings();
+//        this.viewHolding = mock(holdings.class);
+        viewHolding.initData();
 //        this.mockDataHolding();
         this.viewHolding.calcWeight();
 //        this.mockitoHoldings();
@@ -138,5 +139,19 @@ public class singleAccountFeatureTest {
         BigDecimal expectedDecimalValue = expectedValue.setScale(5, BigDecimal.ROUND_HALF_UP);
         Assert.assertEquals(expectedDecimalValue, actualValue);
 
+    }
+
+    @Given("^holding enquiry \"([^\"]*)\" \"([^\"]*)\"$")
+    public void holdingEnquiry(String stockCode, String dataSourceFile) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        this.stock_code = stockCode;
+        this.fileName = dataSourceFile;
+    }
+
+    @Then("^company holding \"([^\"]*)\"$")
+    public void companyHolding(BigDecimal expectedValue) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        BigDecimal actualValue = this.viewHolding.getStockHolding(this.stock_code);
+        Assert.assertEquals(expectedValue, actualValue);
     }
 }

@@ -1,26 +1,5 @@
 Feature: Single Account
 
-  Scenario: Total Number of Holdings for all accounts
-    Given portfolio holdings DB by mock object
-    Then the total number of account 5
-
-  Scenario: Total Number of Holdings for all accounts
-    Given portfolio holdings DB is "input.data.01.csv"
-    When I call CalcEngine
-    Then the total number of account 2 number holding 16
-
-
-  Scenario Outline: Number of Holding for single account
-    Given my view account is "<account_id>" "<posn_file>"
-    When I call CalcEngine
-    Then I should get Number Holding "<num_holding>"
-
-    Examples:
-      | account_id | num_holding | posn_file          |
-      | 660001     | 9           | input.data.01.csv  |
-      | 670001     | 7           | input.data.01.csv  |
-
-
   Scenario Outline: MV for single account
     Given my view account is "<account_id>" "<posn_file>"
     When I call CalcEngine
@@ -55,4 +34,37 @@ Feature: Single Account
       |670001       | 0007.HK   | 0.13793     | input.data.01.csv |
       |670001       | 1003.JP   | 0.12315     | input.data.01.csv |
       |670001       | 1004.JP   | 0.10509     | input.data.01.csv |
+
+
+  Scenario Outline: single stock Holding
+    Given holding enquiry "<stockCode>" "<posn_file>"
+    When I call CalcEngine
+    Then company holding "<units>"
+
+    Examples:
+      | stockCode | units       | posn_file         |
+      | 0002.HK   | 110.0       | input.data.01.csv |
+      | 0004.HK   | 240.0       | input.data.01.csv |
+
+
+  Scenario: Total Number of Holdings for all accounts
+    Given portfolio holdings DB by mock object
+    Then the total number of account 5
+
+  Scenario: Total Number of Holdings for all accounts
+    Given portfolio holdings DB is "input.data.01.csv"
+    When I call CalcEngine
+    Then the total number of account 2 number holding 16
+
+
+  Scenario Outline: Number of Holding for single account
+    Given my view account is "<account_id>" "<posn_file>"
+    When I call CalcEngine
+    Then I should get Number Holding "<num_holding>"
+
+    Examples:
+      | account_id | num_holding | posn_file          |
+      | 660001     | 9           | input.data.01.csv  |
+      | 670001     | 7           | input.data.01.csv  |
+
 

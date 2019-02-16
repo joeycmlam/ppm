@@ -2,13 +2,13 @@ package com.am.portfolio;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 
 
 public class holdings {
-    private Hashtable<String, Hashtable<String, holding>> htHoldings;
+    private HashMap<String, HashMap<String, holding>> htHoldings;
     
 
     public int numAccounts () {
@@ -17,7 +17,7 @@ public class holdings {
     }
 
     public holdings() {
-        this.htHoldings = new Hashtable<>();
+        this.htHoldings = new HashMap<>();
     }
 
     public void initData() {
@@ -28,12 +28,39 @@ public class holdings {
 
     }
 
+    public holding findHolding(String accountId, String stockCode) {
+        holding h = null;
+
+        if (this.htHoldings.containsKey(accountId)) {
+            if (this.htHoldings.get(accountId).containsKey(stockCode)) {
+                h = this.htHoldings.get(accountId).get(stockCode);
+            }
+        }
+
+        return h;
+    }
+
+    public BigDecimal getStockHolding(String stockCode){
+        double dblTotalMV= 0;
+        HashMap<String, holding> aPortfolio;
+        holding h;
+
+        for (Map.Entry <String, HashMap<String, holding>> item : this.htHoldings.entrySet()){
+            aPortfolio = item.getValue();
+            if (aPortfolio.containsKey(stockCode)) {
+                h = aPortfolio.get(stockCode);
+                dblTotalMV += h.unit;
+            }
+        }
+        return BigDecimal.valueOf(dblTotalMV);
+    }
+
     public long getNumHoldings() {
 
         long totalNum=0;
-        for (Map.Entry<String, Hashtable<String, holding>> item : this.htHoldings.entrySet()) {
+        for (Map.Entry<String, HashMap<String, holding>> item : this.htHoldings.entrySet()) {
 
-            Hashtable<String, holding> h = item.getValue();
+            HashMap<String, holding> h = item.getValue();
             totalNum += h.size();
         }
         return totalNum;
@@ -43,7 +70,7 @@ public class holdings {
         long counter=0;
 
         if (this.htHoldings.containsKey(account_id)) {
-          Hashtable<String, holding> h = this.htHoldings.get(account_id);
+            HashMap<String, holding> h = this.htHoldings.get(account_id);
           counter = h.size();
         }
 
@@ -53,7 +80,7 @@ public class holdings {
     public double getTotalMV() {
         double totalmv=0;
 
-        for (Map.Entry<String,  Hashtable<String, holding>> item : this.htHoldings.entrySet()) {
+        for (Map.Entry<String,  HashMap<String, holding>> item : this.htHoldings.entrySet()) {
 
             String acctId = item.getKey();
             totalmv += this.getTotalMV(acctId);
@@ -66,7 +93,7 @@ public class holdings {
         double totalmv=0;
 
         if (this.htHoldings.containsKey(account_id)) {
-            Hashtable<String, holding> lstHoldings = this.htHoldings.get(account_id);
+            HashMap<String, holding> lstHoldings = this.htHoldings.get(account_id);
             for (String stockCode : lstHoldings.keySet()) {
                 holding h = lstHoldings.get(stockCode);
                 totalmv += h.mv;
@@ -87,11 +114,11 @@ public class holdings {
         h.unit = unit;
         h.mv = mv;
 
-        Hashtable<String, holding> lstHoldings;
+        HashMap<String, holding> lstHoldings;
         if (this.htHoldings.containsKey(h.acctid)) {
             lstHoldings = this.htHoldings.get(h.acctid);
         } else {
-            lstHoldings =new Hashtable<>();
+            lstHoldings =new HashMap<>();
             this.htHoldings.put(h.acctid, lstHoldings);
         }
         lstHoldings.put(h.stockid, h);
@@ -101,7 +128,7 @@ public class holdings {
         double totalMV = this.getTotalMV(account_id);
 
         if (this.htHoldings.containsKey(account_id)) {
-            Hashtable<String, holding> lstHolding = this.htHoldings.get(account_id);
+            HashMap<String, holding> lstHolding = this.htHoldings.get(account_id);
             for (holding h : lstHolding.values()) {
                 h.wgt = BigDecimal.valueOf(h.mv / totalMV);
             }
@@ -112,7 +139,7 @@ public class holdings {
 
     public void calcWeight() {
 
-        for (Map.Entry<String, Hashtable<String, holding>> item : this.htHoldings.entrySet()) {
+        for (Map.Entry<String, HashMap<String, holding>> item : this.htHoldings.entrySet()) {
             String acctId = item.getKey();
             this.calcWeight(acctId);
         }
@@ -122,7 +149,7 @@ public class holdings {
         holding h = null;
 
         if (this.htHoldings.containsKey(account_id)) {
-            Hashtable<String, holding> acctHolding = this.htHoldings.get(account_id);
+            HashMap<String, holding> acctHolding = this.htHoldings.get(account_id);
             if (acctHolding.containsKey(stock_code)){
                 h = acctHolding.get(stock_code);
             } else {
