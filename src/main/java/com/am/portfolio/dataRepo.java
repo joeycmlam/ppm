@@ -4,6 +4,7 @@ import com.am.util.fileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class dataRepo {
@@ -21,20 +22,23 @@ public class dataRepo {
         ArrayList<holding> aryHoldings;
         holding aHolding;
 
-        File file  = new File(this.filePath, this.fileName);
-        List<List<String>> records = fileUtil.getFile(file.getAbsolutePath());
 
+        File file  = new File(this.filePath, this.fileName);
         aryHoldings = new ArrayList<>();
-        for (List<String> record : records) {
-            aHolding = new holding();
-            for(String item : record) {
-                aHolding.acctid = record.get(0);
-                aHolding.stockid = record.get(1);
-                aHolding.unit = Double.parseDouble(record.get(2));
-                aHolding.mv = Double.parseDouble(record.get(4));
+        try {
+            List<HashMap<String, String>> records = fileUtil.readCSVFile(file.getAbsolutePath());
+            for (HashMap<String, String> record : records) {
+                aHolding = new holding ();
+                aHolding.acctid = record.get("acctId");
+                aHolding.stockid = record.get("stockcode");
+                aHolding.unit = Double.parseDouble(record.get("unit"));
+                aHolding.mv = Double.parseDouble(record.get("mv"));
                 aryHoldings.add(aHolding);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return aryHoldings;
     }
 }
