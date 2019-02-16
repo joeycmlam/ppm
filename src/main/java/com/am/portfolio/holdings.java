@@ -41,7 +41,7 @@ public class holdings {
     }
 
     public BigDecimal getStockHolding(String stockCode){
-        double dblTotalMV= 0;
+        double dblTotalUnits = 0;
         HashMap<String, holding> aPortfolio;
         holding h;
 
@@ -49,10 +49,10 @@ public class holdings {
             aPortfolio = item.getValue();
             if (aPortfolio.containsKey(stockCode)) {
                 h = aPortfolio.get(stockCode);
-                dblTotalMV += h.unit;
+                dblTotalUnits  += h.unit;
             }
         }
-        return BigDecimal.valueOf(dblTotalMV);
+        return BigDecimal.valueOf(dblTotalUnits );
     }
 
     public long getNumHoldings() {
