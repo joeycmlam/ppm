@@ -1,15 +1,23 @@
 package com.am.portfolio;
 
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 
-
+@RestController
+@Component
 public class holdings {
     private HashMap<String, HashMap<String, holding>> htHoldings;
-    
+    private nodeHolding treeHoldings;
 
     public int numAccounts () {
         return this.htHoldings.size();
@@ -25,8 +33,14 @@ public class holdings {
         dataRepo dataSource = new dataRepo("src/test/resource", "input.data.01.csv");
         ArrayList<holding> records = dataSource.getPositions();
         records.forEach(aHolding -> this.addHolding(aHolding));
-
+        this.treeHoldings = new nodeHolding(0, "Total Investment");
+        for (holding aHolding : records) {
+            this.treeHoldings.addNode(aHolding);
+        }
+        System.out.println(this.treeHoldings.currentLevel());
     }
+
+
 
     public holding findHolding(String accountId, String stockCode) {
         holding h = null;
@@ -55,6 +69,7 @@ public class holdings {
         return BigDecimal.valueOf(dblTotalUnits );
     }
 
+    @RequestMapping("/getNumHoldings")
     public long getNumHoldings() {
 
         long totalNum=0;
@@ -122,6 +137,8 @@ public class holdings {
             this.htHoldings.put(h.acctid, lstHoldings);
         }
         lstHoldings.put(h.stockid, h);
+
+
     }
 
     public void calcWeight(String account_id) {

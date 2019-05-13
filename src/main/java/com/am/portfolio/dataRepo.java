@@ -33,6 +33,9 @@ public class dataRepo {
                 aHolding.stockid = record.get("stockcode");
                 aHolding.unit = Double.parseDouble(record.get("unit"));
                 aHolding.mv = Double.parseDouble(record.get("mv"));
+                aHolding.country=record.get("country");
+                aHolding.region = record.get("region");
+                aHolding.sector = record.get("sector");
                 aryHoldings.add(aHolding);
             }
         } catch (Exception e) {
@@ -41,4 +44,6 @@ public class dataRepo {
 
         return aryHoldings;
     }
+
+
 }
